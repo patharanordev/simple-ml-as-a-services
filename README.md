@@ -1,4 +1,4 @@
-# Machine Learning as a Service (MLaaS)
+# Simple Machine Learning as a Service (MLaaS)
 
 Let's predict `Iris` species from Iris's metrics!!!
 
