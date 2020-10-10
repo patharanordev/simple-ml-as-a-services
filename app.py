@@ -2,6 +2,7 @@ from flask import Flask, request
 from flask_cors import CORS, cross_origin
 import joblib
 import numpy as np
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -39,4 +40,5 @@ def predict_species():
         return 'Virginica'
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
