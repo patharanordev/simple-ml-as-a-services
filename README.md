@@ -90,6 +90,8 @@ Example code :
 ```py
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
+import traceback
+import sys
 import joblib
 import numpy as np
 import os
@@ -97,10 +99,11 @@ import os
 app = Flask(__name__)
 CORS(app)
 
+model = None
+
 @app.route('/iris', methods=['POST'])
 @cross_origin()
 def predict_species():
-    model = joblib.load('iris.model')
     req = request.values['param']
     inputs = np.array(req.split(','), dtype=np.float32).reshape(1,-1)
     predict_target = model.predict(inputs)
@@ -112,8 +115,14 @@ def predict_species():
         return 'Virginica'
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=True)
+    try:
+        # Load model
+        model = joblib.load('iris.model')
+
+        port = int(os.environ.get('PORT', 5000))
+        app.run(host='0.0.0.0', port=port, debug=True)
+    except Exception as ex:
+        traceback.print_exc(file=sys.stdout)
 ```
 
 ## Iris's metrics for testing
